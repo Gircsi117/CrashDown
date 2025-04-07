@@ -7,7 +7,44 @@
     <title>OPD9JB - 2025 Crash Down</title>
   </head>
   <body>
-    <div class="container"></div>
-    <script src="./script.js"></script>
+    <audio
+      src="./public/audio/background.mp3"
+      id="background-music"
+      loop
+    ></audio>
+    <div id="container">
+      <div id="main-menu">
+        <header>
+          <h1>OPD9JB - 2025 Crash Down</h1>
+        </header>
+        <div class="buttons">
+          <button id="start-btn" class="btn">Kezdés</button>
+          <button id="scoreboard-btn" class="btn">Eredmények</button>
+          <button id="settings-btn" class="btn">Beállítások</button>
+          <button id="settings-btn" class="btn">Kilépés</button>
+        </div>
+      </div>
+      <div id="settings">
+        <header>
+          <h1>Beállítások</h1>
+        </header>
+        <div class="settings-inputs">
+          <label for="volume">Hangero:</label>
+          <input
+            type="range"
+            name="volume"
+            id="volume-input"
+            min="0"
+            max="1"
+            step="0.01"
+          />
+        </div>
+        <footer><button class="btn back-btn">Vissza</button></footer>
+      </div>
+      <div id="scoreboard">Eredmények</div>
+      <div id="game">Játék</div>
+    </div>
+
+    <script type="module" src="./dist/script.js"></script>
   </body>
 </html>
