@@ -14,7 +14,14 @@ class App {
     GAME_PAGE,
   ];
 
-  constructor() {
+  private static _instance: App;
+
+  public static get instance() {
+    if (!App._instance) App._instance = new App();
+    return App._instance;
+  }
+
+  private constructor() {
     this.setPage(MAIN_MENU_PAGE);
   }
 

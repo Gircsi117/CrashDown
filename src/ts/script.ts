@@ -23,7 +23,6 @@ else CONTAINER.style.width = `100%`;
 //*------------------------------------------------------------------------------------------------------------------
 //* MAIN
 //*------------------------------------------------------------------------------------------------------------------
-const app = new App();
 
 // Zene indítása
 document.addEventListener(
@@ -36,9 +35,13 @@ document.addEventListener(
   { once: true }
 );
 
-START_BTN.addEventListener("click", () => app.setPage(GAME_PAGE));
-SETTINGS_BTN.addEventListener("click", () => app.setPage(SETTINGS_PAGE));
-SCOREBOARD_BTN.addEventListener("click", () => app.setPage(SCOREBOARD_PAGE));
+START_BTN.addEventListener("click", () => App.instance.setPage(GAME_PAGE));
+SETTINGS_BTN.addEventListener("click", () =>
+  App.instance.setPage(SETTINGS_PAGE)
+);
+SCOREBOARD_BTN.addEventListener("click", () =>
+  App.instance.setPage(SCOREBOARD_PAGE)
+);
 
 VOLUME_SLIDER.value = Sound.volume.toString();
 VOLUME_SLIDER.addEventListener("input", (e: Event) => {
@@ -49,5 +52,6 @@ VOLUME_SLIDER.addEventListener("input", (e: Event) => {
 });
 
 Array.from(BACK_BTNS).forEach((btn) => {
-  btn.addEventListener("click", () => app.setPage(MAIN_MENU_PAGE));
+  btn.addEventListener("click", () => App.instance.setPage(MAIN_MENU_PAGE));
 });
+
