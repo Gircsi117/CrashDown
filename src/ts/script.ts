@@ -12,6 +12,7 @@ import {
   VOLUME_SLIDER,
   BACKGROUND_MUSIC,
 } from "./modules/items.module.js";
+import Sound from "./modules/sound.module.js";
 
 const WINDOW_WIDTH = window.innerWidth;
 const WINDOW_HEIGHT = window.innerHeight;
@@ -39,12 +40,12 @@ START_BTN.addEventListener("click", () => app.setPage(GAME_PAGE));
 SETTINGS_BTN.addEventListener("click", () => app.setPage(SETTINGS_PAGE));
 SCOREBOARD_BTN.addEventListener("click", () => app.setPage(SCOREBOARD_PAGE));
 
-VOLUME_SLIDER.value = App.volume.toString();
+VOLUME_SLIDER.value = Sound.volume.toString();
 VOLUME_SLIDER.addEventListener("input", (e: Event) => {
   const target = e.target as HTMLInputElement;
   const value = Number(target.value);
 
-  App.volume = value;
+  Sound.volume = value;
 });
 
 Array.from(BACK_BTNS).forEach((btn) => {
