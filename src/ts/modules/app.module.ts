@@ -16,7 +16,7 @@ class App {
 
   constructor() {
     this.setPage(MAIN_MENU_PAGE);
-    this.volume = Number(sessionStorage.getItem("volume") || 0.1);
+    App.volume = Number(sessionStorage.getItem("volume") || 0.1);
   }
 
   public setPage(page: HTMLElement) {
@@ -26,11 +26,11 @@ class App {
     page.style.display = "flex";
   }
 
-  get volume(): number {
+  public static get volume(): number {
     return BACKGROUND_MUSIC.volume;
   }
 
-  set volume(value: number) {
+  public static set volume(value: number) {
     BACKGROUND_MUSIC.volume = value;
     sessionStorage.setItem("volume", value.toString());
   }

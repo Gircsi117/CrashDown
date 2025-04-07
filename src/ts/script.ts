@@ -39,12 +39,12 @@ START_BTN.addEventListener("click", () => app.setPage(GAME_PAGE));
 SETTINGS_BTN.addEventListener("click", () => app.setPage(SETTINGS_PAGE));
 SCOREBOARD_BTN.addEventListener("click", () => app.setPage(SCOREBOARD_PAGE));
 
-VOLUME_SLIDER.value = app.volume.toString();
+VOLUME_SLIDER.value = App.volume.toString();
 VOLUME_SLIDER.addEventListener("input", (e: Event) => {
   const target = e.target as HTMLInputElement;
   const value = Number(target.value);
 
-  app.volume = value;
+  App.volume = value;
 });
 
 Array.from(BACK_BTNS).forEach((btn) => {
