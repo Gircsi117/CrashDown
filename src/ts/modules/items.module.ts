@@ -23,12 +23,29 @@ export const SCOREBOARD_BTN = document.querySelector(
 
 export const BACK_BTNS = document.getElementsByClassName("back-btn");
 
+// Játék
+export const GAME_FIELD = document.querySelector(
+  "#game-field"
+) as HTMLDivElement;
+
+export const GAME_CANVAS = document.querySelector(
+  "#game-canvas"
+) as HTMLCanvasElement;
+
 // Beállítások
-export const VOLUME_SLIDER = document.querySelector(
-  "#volume-input"
+export const BACKGROUND_VOLUME_SLIDER = document.querySelector(
+  "#backgound-volume-input"
+) as HTMLInputElement;
+
+export const EFFECTS_VOLUME_SLIDER = document.querySelector(
+  "#effects-volume-input"
 ) as HTMLInputElement;
 
 // Zene
 export const BACKGROUND_MUSIC = document.querySelector(
   "#background-music"
+) as HTMLAudioElement;
+
+export const BREAK_EFFECT = document.querySelector(
+  "#break-effect"
 ) as HTMLAudioElement;

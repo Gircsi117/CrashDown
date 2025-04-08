@@ -1,4 +1,5 @@
 import App from "./modules/app.module.js";
+import Game from "./modules/game.module.js";
 import {
   BACK_BTNS,
   CONTAINER,
@@ -9,8 +10,9 @@ import {
   SETTINGS_BTN,
   SETTINGS_PAGE,
   START_BTN,
-  VOLUME_SLIDER,
+  BACKGROUND_VOLUME_SLIDER,
   BACKGROUND_MUSIC,
+  EFFECTS_VOLUME_SLIDER,
 } from "./modules/items.module.js";
 import Sound from "./modules/sound.module.js";
 
@@ -25,6 +27,7 @@ else CONTAINER.style.width = `100%`;
 //*------------------------------------------------------------------------------------------------------------------
 
 // Zene indítása
+
 document.addEventListener(
   "click",
   () => {
@@ -35,7 +38,12 @@ document.addEventListener(
   { once: true }
 );
 
-START_BTN.addEventListener("click", () => App.instance.setPage(GAME_PAGE));
+// Input gombok beállítása
+
+START_BTN.addEventListener("click", () => {
+  App.instance.setPage(GAME_PAGE);
+  Game.instance.start();
+});
 SETTINGS_BTN.addEventListener("click", () =>
   App.instance.setPage(SETTINGS_PAGE)
 );
@@ -43,15 +51,26 @@ SCOREBOARD_BTN.addEventListener("click", () =>
   App.instance.setPage(SCOREBOARD_PAGE)
 );
 
-VOLUME_SLIDER.value = Sound.volume.toString();
-VOLUME_SLIDER.addEventListener("input", (e: Event) => {
+// Hangerők állítása
+
+BACKGROUND_VOLUME_SLIDER.value = Sound.backgroundVolume.toString();
+BACKGROUND_VOLUME_SLIDER.addEventListener("input", (e: Event) => {
   const target = e.target as HTMLInputElement;
   const value = Number(target.value);
 
-  Sound.volume = value;
+  Sound.backgroundVolume = value;
 });
+
+EFFECTS_VOLUME_SLIDER.value = Sound.effectVolume.toString();
+EFFECTS_VOLUME_SLIDER.addEventListener("input", (e: Event) => {
+  const target = e.target as HTMLInputElement;
+  const value = Number(target.value);
+
+  Sound.effectVolume = value;
+});
+
+// Vissza gombok
 
 Array.from(BACK_BTNS).forEach((btn) => {
   btn.addEventListener("click", () => App.instance.setPage(MAIN_MENU_PAGE));
 });
-

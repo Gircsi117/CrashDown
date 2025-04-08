@@ -12,6 +12,7 @@
       id="background-music"
       loop
     ></audio>
+    <audio src="" id="break-effect" loop></audio>
     <div id="container">
       <div id="main-menu">
         <header>
@@ -29,20 +30,49 @@
           <h1>Beállítások</h1>
         </header>
         <div class="settings-inputs">
-          <label for="volume">Hangerő:</label>
-          <input
-            type="range"
-            name="volume"
-            id="volume-input"
-            min="0"
-            max="1"
-            step="0.01"
-          />
+          <div
+            style="display: flex; flex-direction: column; width: 50%; gap: 6px"
+          >
+            <label for="backgound-volume">Háttérzene hangereje:</label>
+            <input
+              type="range"
+              name="background-volume"
+              id="backgound-volume-input"
+              min="0"
+              max="1"
+              step="0.01"
+            />
+          </div>
+          <div
+            style="display: flex; flex-direction: column; width: 50%; gap: 6px"
+          >
+            <label for="effect-volume">Effektek hangereje:</label>
+            <input
+              type="range"
+              name="effects-volume"
+              id="effects-volume-input"
+              min="0"
+              max="1"
+              step="0.01"
+            />
+          </div>
         </div>
         <footer><button class="btn back-btn">Vissza</button></footer>
       </div>
-      <div id="scoreboard">Eredmények</div>
-      <div id="game">Játék</div>
+      <div id="scoreboard">
+        <header>
+          <h1>Eredmények</h1>
+        </header>
+        <footer><button class="btn back-btn">Vissza</button></footer>
+      </div>
+      <div id="game">
+        <header>
+          <h2>Pontszám: 4</h2>
+        </header>
+        <main id="game-field">
+          <canvas id="game-canvas"></canvas>
+        </main>
+      </div>
     </div>
 
     <script type="module" src="./dist/script.js"></script>
