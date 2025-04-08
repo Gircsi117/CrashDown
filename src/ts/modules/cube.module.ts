@@ -5,7 +5,7 @@ export enum CubeType {
 }
 
 class Cube {
-  public readonly type: CubeType;
+  public type: CubeType;
   public x: number;
   public y: number;
   public readonly size: number;

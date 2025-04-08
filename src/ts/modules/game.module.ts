@@ -12,6 +12,8 @@ class Game {
   private readonly ctx: CanvasRenderingContext2D;
   public score = 0;
 
+  private clickable = true;
+
   private cubes: Cube[] = [];
 
   public static get instance() {
@@ -107,7 +109,9 @@ class Game {
     this.cubes = this.cubes.filter((c) => c !== cube);
   }
 
-  public checkClick = (e: MouseEvent) => {
+  public async checkClick(e: MouseEvent) {
+    if (!this.clickable) return;
+    this.clickable = false;
     const { clientX, clientY, pageX, pageY } = e;
 
     const x =
@@ -118,25 +122,25 @@ class Game {
       this.cubeSize;
 
     const cube = this.cubes.find((cube) => cube.x === x && cube.y === y);
-
-    if (!cube) return;
+    if (!cube) {
+      this.clickable = true;
+      return;
+    }
 
     const collisions = this.getCollisions(cube);
-
-    console.log(collisions);
-
-    if (collisions.length < 3) return;
+    if (collisions.length < 3) {
+      this.clickable = true;
+      return;
+    }
 
     collisions.forEach((collision) => this.removeCube(collision));
 
-    this.fallCubes();
+    await this.fallCubes();
 
     this.addRow();
-
-    this.score += collisions.length;
-
+    this.clickable = true;
     if (this.cubes.find((cube) => cube.y < 0)) this.exit();
-  };
+  }
 
   private getCollisions(cube: Cube): Cube[] {
     const result: Cube[] = [cube];
@@ -168,10 +172,66 @@ class Game {
       (c) => c.x === cube.x + this.cubeSize && c.y === cube.y
     );
 
-    return [top, bottom, left, right].filter((c) => c != undefined);
+    return [top, bottom, left, right].filter((c) => c != undefined) as Cube[];
   }
 
-  private fallCubes() {}
+  private getFlyingCubes(): Cube[] {
+    const result: Cube[] = [];
+
+    //this.cubes.forEach((cube) => {
+    //  if (cube.y == this.rowCount * this.cubeSize) return;
+    //});
+
+    for (let i = 0; i < this.columnCount; i++) {
+      const columnCubes = this.cubes.filter(
+        (cube) => cube.x === i * this.cubeSize
+      );
+
+      if (columnCubes.length === 0) continue;
+
+      columnCubes.sort((a, b) => b.y - a.y);
+
+      let bottom = columnCubes[0];
+
+      if (bottom.y != (this.rowCount - 1) * this.cubeSize) {
+        result.push(...columnCubes);
+        continue;
+      }
+
+      if (columnCubes.length === 1) continue;
+
+      for (let j = 1; j < columnCubes.length; j++) {
+        const current = columnCubes[j];
+        if (current.y != bottom.y - this.cubeSize) {
+          result.push(...columnCubes.slice(j));
+          break;
+        }
+        bottom = current;
+      }
+    }
+
+    //result.forEach((cube) => this.removeCube(cube));
+
+    return result;
+  }
+
+  private async fallCubes(): Promise<void> {
+    return new Promise(async (resolve) => {
+      let cubes = [];
+
+      do {
+        cubes = this.getFlyingCubes();
+
+        cubes.forEach((cube) => {
+          cube.y += this.cubeSize;
+        });
+
+        await new Promise((resolve) => setTimeout(resolve, 50));
+      } while (cubes.length != 0);
+
+      resolve();
+    });
+  }
 }
 
 export default Game;
