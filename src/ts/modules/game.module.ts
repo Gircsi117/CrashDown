@@ -70,8 +70,6 @@ class Game {
 
       randomCube.bonus = true;
       this.bonusCounter -= 500;
-
-      console.log(randomCube);
     }
   }
 
