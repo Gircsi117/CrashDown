@@ -198,7 +198,7 @@ class Game {
 
   //* Kocka eltávolítása
   public removeCube(cube: Cube) {
-    if (cube.bonus) this.time += 10;
+    if (cube.bonus) this.time += 5;
     this.cubes = this.cubes.filter((c) => c !== cube);
   }
 
