@@ -10,6 +10,8 @@ class Cube {
   public y: number;
   public readonly size: number;
 
+  public bonus: boolean = false;
+
   constructor(type: CubeType, x: number, y: number, size: number) {
     this.type = type;
     this.x = x;
@@ -25,6 +27,16 @@ class Cube {
     ctx.fillStyle = this.type;
     ctx.fillRect(this.x, this.y, this.size, this.size);
 
+    if (this.bonus) {
+      ctx.fillStyle = "yellow";
+      ctx.fillRect(
+        this.x + this.size / 4,
+        this.y + this.size / 4,
+        this.size / 2,
+        this.size / 2
+      );
+    }
+
     ctx.restore();
   }
 
@@ -33,6 +45,7 @@ class Cube {
       Math.floor(Math.random() * Object.values(CubeType).length)
     ];
   }
+
 }
 
 export default Cube;

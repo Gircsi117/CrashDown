@@ -1,5 +1,5 @@
 import App from "./app.module.js";
-import Cube, { CubeType } from "./cube.module.js";
+import Cube from "./cube.module.js";
 import {
   BREAK_EFFECT,
   GAME_CANVAS,
@@ -20,6 +20,7 @@ class Game {
 
   private readonly ctx: CanvasRenderingContext2D;
   private _score: number = 0;
+  private _bonusCounter: number = 0;
   private _time: number = 60;
 
   private timer: number = 0;
@@ -54,6 +55,26 @@ class Game {
       .padStart(2, "0")}`;
   }
 
+  public get bonusCounter() {
+    return this._bonusCounter;
+  }
+
+  public set bonusCounter(counter: number) {
+    this._bonusCounter = counter;
+
+    if (this.bonusCounter >= 500) {
+      const filteredCubes = this.cubes.filter((cube) => !cube.bonus);
+
+      const randomCube =
+        filteredCubes[Math.floor(Math.random() * filteredCubes.length)];
+
+      randomCube.bonus = true;
+      this.bonusCounter -= 500;
+
+      console.log(randomCube);
+    }
+  }
+
   //* Instance lekérése
   public static get instance() {
     if (!Game._instance) Game._instance = new Game();
@@ -83,6 +104,7 @@ class Game {
 
     this.score = 0;
     this.time = 60;
+    this.bonusCounter = 0;
   }
 
   //* Játék indítása
@@ -178,6 +200,7 @@ class Game {
 
   //* Kocka eltávolítása
   public removeCube(cube: Cube) {
+    if (cube.bonus) this.time += 10;
     this.cubes = this.cubes.filter((c) => c !== cube);
   }
 
@@ -211,6 +234,7 @@ class Game {
     collisions.forEach((collision) => this.removeCube(collision));
 
     this.score += collisions.length * 10;
+    this.bonusCounter += collisions.length * 10;
 
     await this.fallCubes();
 
