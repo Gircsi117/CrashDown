@@ -18,6 +18,19 @@ class App {
 
   private static _instance: App;
 
+  public get records(): { name: string; score: number; date: Date }[] {
+    const session = sessionStorage.getItem("records") || "[]";
+    return JSON.parse(session).slice(0, 10);
+  }
+
+  public addRecord(record: { name: string; score: number; date: Date }) {
+    const records = [...this.records, record];
+
+    records.sort((a, b) => b.score - a.score);
+
+    sessionStorage.setItem("records", JSON.stringify(records.slice(0, 10)));
+  }
+
   public static get instance() {
     if (!App._instance) App._instance = new App();
     return App._instance;

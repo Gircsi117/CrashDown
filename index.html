@@ -62,14 +62,14 @@
       </div>
       <div id="informations">
         <header><h1>Információk</h1></header>
-        <div style="flex: 1">
+        <div style="flex: 1; padding: 10px">
           <h2 style="margin-bottom: 5px">Játékmenet</h2>
           <p>
-            A játékban szines négyzetek elpusztítása a feladat, ehhez legalább
-            3 egymást érintő elemre van szükség.
+            A játékban szines négyzetek elpusztítása a feladat, ehhez legalább 3
+            egymást érintő elemre van szükség.
           </p>
           <p>
-            A játék addig tart amég a négyzetek el nem érik a játéktér tetejét,
+            A játék addig tart amíg a négyzetek el nem érik a játéktér tetejét,
             vagy az idő le nem jár.
           </p>
           <br />
@@ -100,6 +100,9 @@
         <header>
           <h1>Eredmények</h1>
         </header>
+        <div style="flex: 1; padding: 10px">
+          <div id="scoreboard-list"></div>
+        </div>
         <footer><button class="btn back-btn">Vissza</button></footer>
       </div>
       <div id="game">
@@ -112,6 +115,12 @@
         </main>
       </div>
     </div>
+    <dialog id="game-over-dialog" onkeypress="(e)=>{e.preventDefault()}">
+      <h1 style="text-align: center">GAME OVER</h1>
+      <h2 id="game-over-message" style="text-align: center">Béna vagy</h2>
+      <input type="text" id="game-over-input" placeholder="Nev" class="input" />
+      <button id="game-over-btn" class="btn">Mentes</button>
+    </dialog>
 
     <script type="module" src="./dist/script.js"></script>
   </body>

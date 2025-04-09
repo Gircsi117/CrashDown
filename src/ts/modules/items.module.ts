@@ -13,6 +13,10 @@ export const SCOREBOARD_PAGE = document.querySelector(
 ) as HTMLDivElement;
 export const GAME_PAGE = document.querySelector("#game") as HTMLDivElement;
 
+export const SCOREBOARD_LIST = document.querySelector(
+  "#scoreboard-list"
+) as HTMLDivElement;
+
 // Gombok
 export const START_BTN = document.querySelector(
   "#start-btn"
@@ -40,6 +44,22 @@ export const GAME_CANVAS = document.querySelector(
 
 export const SCORE = document.querySelector("#score") as HTMLSpanElement;
 export const TIME = document.querySelector("#time") as HTMLSpanElement;
+
+export const GAME_OVER_DIALOG = document.querySelector(
+  "#game-over-dialog"
+) as HTMLDialogElement;
+
+export const GAME_OVER_MESSAGE = document.querySelector(
+  "#game-over-message"
+) as HTMLSpanElement;
+
+export const GAME_OVER_INPUT = document.querySelector(
+  "#game-over-input"
+) as HTMLInputElement;
+
+export const GAME_OVER_BTN = document.querySelector(
+  "#game-over-btn"
+) as HTMLButtonElement;
 
 // Beállítások
 export const BACKGROUND_VOLUME_SLIDER = document.querySelector(

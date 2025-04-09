@@ -16,6 +16,10 @@ import {
   BREAK_EFFECT,
   INFORMATIONS_BTN,
   INFORMATIONS_PAGE,
+  GAME_OVER_DIALOG,
+  GAME_OVER_BTN,
+  GAME_OVER_INPUT,
+  SCOREBOARD_LIST,
 } from "./modules/items.module.js";
 import Sound from "./modules/sound.module.js";
 
@@ -53,9 +57,48 @@ INFORMATIONS_BTN.addEventListener("click", () =>
 SETTINGS_BTN.addEventListener("click", () =>
   App.instance.setPage(SETTINGS_PAGE)
 );
-SCOREBOARD_BTN.addEventListener("click", () =>
-  App.instance.setPage(SCOREBOARD_PAGE)
-);
+SCOREBOARD_BTN.addEventListener("click", () => {
+  console.log(App.instance.records);
+
+  let listItems = App.instance.records
+    .map(
+      (record, index) =>
+        `<tr>
+          <td>${index + 1}.</td>
+          <td>${record.name}</td>
+          <td>${record.score}</td>
+          <td>${new Date(record.date).toLocaleString()}</td>
+        </tr>`
+    )
+    .join("");
+
+  for (let i = App.instance.records.length; i < 10; i++) {
+    listItems += `<tr>
+          <td>${i + 1}.</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>`;
+  }
+
+  SCOREBOARD_LIST.innerHTML = `
+    <table class="scoreboard-list">
+      <thead>
+        <tr>
+          <th>Helyezés</th>
+          <th>Név</th>
+          <th>Eredmény</th>
+          <th>Dátum</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${listItems}
+      </tbody>
+    </table>
+    `;
+
+  App.instance.setPage(SCOREBOARD_PAGE);
+});
 
 // Hangerők állítása
 
@@ -80,4 +123,21 @@ EFFECTS_VOLUME_SLIDER.addEventListener("input", (e: Event) => {
 
 Array.from(BACK_BTNS).forEach((btn) => {
   btn.addEventListener("click", () => App.instance.setPage(MAIN_MENU_PAGE));
+});
+
+GAME_OVER_DIALOG.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    e.preventDefault();
+  }
+});
+
+GAME_OVER_BTN.addEventListener("click", () => {
+  const name = GAME_OVER_INPUT.value || "Anonim";
+
+  const record = { name, score: Game.instance.score, date: new Date() };
+
+  App.instance.addRecord(record);
+
+  GAME_OVER_DIALOG.close();
+  Game.instance.exit();
 });

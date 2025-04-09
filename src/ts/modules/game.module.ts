@@ -4,6 +4,8 @@ import {
   BREAK_EFFECT,
   GAME_CANVAS,
   GAME_FIELD,
+  GAME_OVER_DIALOG,
+  GAME_OVER_MESSAGE,
   MAIN_MENU_PAGE,
   SCORE,
   TIME,
@@ -52,11 +54,13 @@ class Game {
       .padStart(2, "0")}`;
   }
 
+  //* Instance lekérése
   public static get instance() {
     if (!Game._instance) Game._instance = new Game();
     return Game._instance;
   }
 
+  //* Konstruktor
   private constructor() {
     const { width, height } = GAME_FIELD.getBoundingClientRect();
 
@@ -81,6 +85,7 @@ class Game {
     this.time = 60;
   }
 
+  //* Játék indítása
   public start() {
     this.addRow(3);
     GAME_CANVAS.addEventListener("click", this.localClick);
@@ -88,18 +93,30 @@ class Game {
     this.startTimer();
   }
 
+  //* Játék újraindítása
   public reset() {
     GAME_CANVAS.removeEventListener("click", this.localClick);
     Game._instance = new Game();
     return Game.instance;
   }
 
+  //* Vége a játéknak
+  public gameOver(message: string) {
+    clearInterval(this.timer);
+    this.clickable = false;
+    GAME_CANVAS.removeEventListener("click", this.localClick);
+    GAME_OVER_MESSAGE.textContent = message;
+    GAME_OVER_DIALOG.showModal();
+  }
+
+  //* Kilépés
   public exit() {
     clearInterval(this.timer);
     App.instance.setPage(MAIN_MENU_PAGE);
     GAME_CANVAS.removeEventListener("click", this.localClick);
   }
 
+  //* Háttér megrajzolása
   private drawBackground() {
     this.ctx.clearRect(0, 0, GAME_CANVAS.width, GAME_CANVAS.height);
 
@@ -120,10 +137,12 @@ class Game {
     this.ctx.closePath();
   }
 
+  //* Kockák megrajzolása
   private drawCubes() {
     this.cubes.forEach((cube) => cube.draw(this.ctx));
   }
 
+  //* Képkockánkénti rajzolás
   private animate() {
     this.drawBackground();
     this.drawCubes();
@@ -131,13 +150,15 @@ class Game {
     requestAnimationFrame(() => this.animate());
   }
 
+  //* Időzítő elindítása
   private startTimer() {
     this.timer = setInterval(() => {
       this.time -= 1;
-      if (this.time <= 0) this.exit();
+      if (this.time <= 0) this.gameOver("Lejárt az idő!");
     }, 1000);
   }
 
+  //* Új sor hozzáadása
   private addRow(rowCount: number = 1) {
     this.cubes.forEach((cube) => (cube.y -= this.cubeSize));
 
@@ -155,10 +176,12 @@ class Game {
     if (rowCount > 1) this.addRow(rowCount - 1);
   }
 
+  //* Kocka eltávolítása
   public removeCube(cube: Cube) {
     this.cubes = this.cubes.filter((c) => c !== cube);
   }
 
+  //* Kttintás érzékelése
   public async checkClick(e: MouseEvent) {
     if (!this.clickable) return;
 
@@ -193,9 +216,11 @@ class Game {
 
     this.addRow();
     this.clickable = true;
-    if (this.cubes.find((cube) => cube.y < 0)) this.exit();
+    if (this.cubes.find((cube) => cube.y < 0))
+      this.gameOver("A négyzetek elérték a plafont!");
   }
 
+  //* Kocka "csoport" lekérése
   private getCollisions(cube: Cube): Cube[] {
     const result: Cube[] = [cube];
 
@@ -212,6 +237,7 @@ class Game {
     return result;
   }
 
+  //* Kocka szomszédjainak lekérése
   private getNeighbors(cube: Cube): Cube[] {
     const top = this.cubes.find(
       (c) => c.x === cube.x && c.y === cube.y - this.cubeSize
@@ -229,12 +255,9 @@ class Game {
     return [top, bottom, left, right].filter((c) => c != undefined) as Cube[];
   }
 
+  //* Lekéri a lebegő kockákat
   private getFlyingCubes(): Cube[] {
     const result: Cube[] = [];
-
-    //this.cubes.forEach((cube) => {
-    //  if (cube.y == this.rowCount * this.cubeSize) return;
-    //});
 
     for (let i = 0; i < this.columnCount; i++) {
       const columnCubes = this.cubes.filter(
@@ -264,11 +287,10 @@ class Game {
       }
     }
 
-    //result.forEach((cube) => this.removeCube(cube));
-
     return result;
   }
 
+  //* Lebegő kockák "leejtése"
   private async fallCubes(): Promise<void> {
     return new Promise(async (resolve) => {
       let cubes = [];
