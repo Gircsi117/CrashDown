@@ -1,9 +1,4 @@
-import {
-  BACKGROUND_MUSIC,
-  BACKGROUND_VOLUME_SLIDER,
-  BREAK_EFFECT,
-  EFFECTS_VOLUME_SLIDER,
-} from "./items.module.js";
+import { BACKGROUND_MUSIC, BREAK_EFFECT } from "./items.module.js";
 
 class Sound {
   static get backgroundVolume(): number {

@@ -1,6 +1,13 @@
 import App from "./app.module.js";
 import Cube, { CubeType } from "./cube.module.js";
-import { GAME_CANVAS, GAME_FIELD, MAIN_MENU_PAGE } from "./items.module.js";
+import {
+  BREAK_EFFECT,
+  GAME_CANVAS,
+  GAME_FIELD,
+  MAIN_MENU_PAGE,
+  SCORE,
+  TIME,
+} from "./items.module.js";
 
 class Game {
   private static _instance: Game;
@@ -10,11 +17,40 @@ class Game {
   private readonly columnCount: number = 15;
 
   private readonly ctx: CanvasRenderingContext2D;
-  public score = 0;
+  private _score: number = 0;
+  private _time: number = 60;
+
+  private timer: number = 0;
 
   private clickable = true;
 
   private cubes: Cube[] = [];
+
+  private readonly localClick: (e: MouseEvent) => void;
+
+  public get score() {
+    return this._score;
+  }
+
+  public set score(score: number) {
+    this._score = score;
+    SCORE.textContent = this.score.toString();
+  }
+
+  public get time() {
+    return this._time;
+  }
+
+  public set time(time: number) {
+    this._time = time;
+
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+
+    TIME.textContent = `${minutes.toString().padStart(2, "0")}:${seconds
+      .toString()
+      .padStart(2, "0")}`;
+  }
 
   public static get instance() {
     if (!Game._instance) Game._instance = new Game();
@@ -38,23 +74,30 @@ class Game {
 
     this.ctx = GAME_CANVAS.getContext("2d") as CanvasRenderingContext2D;
     this.cubeSize = size;
+
+    this.localClick = this.checkClick.bind(this);
+
+    this.score = 0;
+    this.time = 60;
   }
 
   public start() {
     this.addRow(3);
-    GAME_CANVAS.addEventListener("click", this.checkClick.bind(this));
+    GAME_CANVAS.addEventListener("click", this.localClick);
     this.animate();
+    this.startTimer();
   }
 
-  public restart() {
+  public reset() {
+    GAME_CANVAS.removeEventListener("click", this.localClick);
     Game._instance = new Game();
-    Game.instance.start();
+    return Game.instance;
   }
 
   public exit() {
+    clearInterval(this.timer);
     App.instance.setPage(MAIN_MENU_PAGE);
-
-    GAME_CANVAS.removeEventListener("click", this.checkClick.bind(this));
+    GAME_CANVAS.removeEventListener("click", this.localClick);
   }
 
   private drawBackground() {
@@ -88,6 +131,13 @@ class Game {
     requestAnimationFrame(() => this.animate());
   }
 
+  private startTimer() {
+    this.timer = setInterval(() => {
+      this.time -= 1;
+      if (this.time <= 0) this.exit();
+    }, 1000);
+  }
+
   private addRow(rowCount: number = 1) {
     this.cubes.forEach((cube) => (cube.y -= this.cubeSize));
 
@@ -111,8 +161,9 @@ class Game {
 
   public async checkClick(e: MouseEvent) {
     if (!this.clickable) return;
+
     this.clickable = false;
-    const { clientX, clientY, pageX, pageY } = e;
+    const { clientX, clientY } = e;
 
     const x =
       Math.floor((clientX - GAME_CANVAS.offsetLeft) / this.cubeSize) *
@@ -133,7 +184,10 @@ class Game {
       return;
     }
 
+    BREAK_EFFECT.play();
     collisions.forEach((collision) => this.removeCube(collision));
+
+    this.score += collisions.length * 10;
 
     await this.fallCubes();
 
@@ -226,7 +280,7 @@ class Game {
           cube.y += this.cubeSize;
         });
 
-        await new Promise((resolve) => setTimeout(resolve, 50));
+        await new Promise((resolve_) => setTimeout(resolve_, 50));
       } while (cubes.length != 0);
 
       resolve();

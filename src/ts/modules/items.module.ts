@@ -5,6 +5,9 @@ export const MAIN_MENU_PAGE = document.querySelector(
 export const SETTINGS_PAGE = document.querySelector(
   "#settings"
 ) as HTMLDivElement;
+export const INFORMATIONS_PAGE = document.querySelector(
+  "#informations"
+) as HTMLDivElement;
 export const SCOREBOARD_PAGE = document.querySelector(
   "#scoreboard"
 ) as HTMLDivElement;
@@ -13,6 +16,9 @@ export const GAME_PAGE = document.querySelector("#game") as HTMLDivElement;
 // Gombok
 export const START_BTN = document.querySelector(
   "#start-btn"
+) as HTMLButtonElement;
+export const INFORMATIONS_BTN = document.querySelector(
+  "#informations-btn"
 ) as HTMLButtonElement;
 export const SETTINGS_BTN = document.querySelector(
   "#settings-btn"
@@ -31,6 +37,9 @@ export const GAME_FIELD = document.querySelector(
 export const GAME_CANVAS = document.querySelector(
   "#game-canvas"
 ) as HTMLCanvasElement;
+
+export const SCORE = document.querySelector("#score") as HTMLSpanElement;
+export const TIME = document.querySelector("#time") as HTMLSpanElement;
 
 // Beállítások
 export const BACKGROUND_VOLUME_SLIDER = document.querySelector(

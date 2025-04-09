@@ -12,7 +12,7 @@
       id="background-music"
       loop
     ></audio>
-    <audio src="" id="break-effect" loop></audio>
+    <audio src="./public/audio/putty.mp3" id="break-effect"></audio>
     <div id="container">
       <div id="main-menu">
         <header>
@@ -20,6 +20,7 @@
         </header>
         <div class="buttons">
           <button id="start-btn" class="btn">Kezdés</button>
+          <button id="informations-btn" class="btn">Információ</button>
           <button id="scoreboard-btn" class="btn">Eredmények</button>
           <button id="settings-btn" class="btn">Beállítások</button>
           <button id="settings-btn" class="btn">Kilépés</button>
@@ -59,6 +60,42 @@
         </div>
         <footer><button class="btn back-btn">Vissza</button></footer>
       </div>
+      <div id="informations">
+        <header><h1>Információk</h1></header>
+        <div style="flex: 1">
+          <h2 style="margin-bottom: 5px">Játékmenet</h2>
+          <p>
+            A játékban szines négyzetek elpusztítása a feladat, ehhez legalább
+            3 egymást érintő elemre van szükség.
+          </p>
+          <p>
+            A játék addig tart amég a négyzetek el nem érik a játéktér tetejét,
+            vagy az idő le nem jár.
+          </p>
+          <br />
+          <h2 style="margin-bottom: 5px">Médialemek</h2>
+          <p>
+            A háttérzenét a
+            <b
+              ><a
+                href="https://www.suno.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Suno</a
+              ></b
+            >
+            oldalán generáltam.
+          </p>
+          <br />
+          <h2 style="margin-bottom: 5px">Köszönet</h2>
+          <p>
+            Köszönet a kollégáimnak akik a tesztelésben és a hangok
+            kiválasztásában / javításában segítettek!
+          </p>
+          <p>Külön köszönet illeti Barnabást a törés hang kiadásáért!</p>
+        </div>
+        <footer><button class="btn back-btn">Vissza</button></footer>
+      </div>
       <div id="scoreboard">
         <header>
           <h1>Eredmények</h1>
@@ -66,8 +103,9 @@
         <footer><button class="btn back-btn">Vissza</button></footer>
       </div>
       <div id="game">
-        <header>
-          <h2>Pontszám: 4</h2>
+        <header style="display: flex; justify-content: space-between">
+          <h2>Pontszám: <span id="score">0</span></h2>
+          <h2>Idő: <span id="time">01:00</span></h2>
         </header>
         <main id="game-field">
           <canvas id="game-canvas"></canvas>

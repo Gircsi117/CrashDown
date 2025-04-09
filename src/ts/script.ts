@@ -13,6 +13,9 @@ import {
   BACKGROUND_VOLUME_SLIDER,
   BACKGROUND_MUSIC,
   EFFECTS_VOLUME_SLIDER,
+  BREAK_EFFECT,
+  INFORMATIONS_BTN,
+  INFORMATIONS_PAGE,
 } from "./modules/items.module.js";
 import Sound from "./modules/sound.module.js";
 
@@ -42,8 +45,11 @@ document.addEventListener(
 
 START_BTN.addEventListener("click", () => {
   App.instance.setPage(GAME_PAGE);
-  Game.instance.start();
+  Game.instance.reset().start();
 });
+INFORMATIONS_BTN.addEventListener("click", () =>
+  App.instance.setPage(INFORMATIONS_PAGE)
+);
 SETTINGS_BTN.addEventListener("click", () =>
   App.instance.setPage(SETTINGS_PAGE)
 );
@@ -67,6 +73,7 @@ EFFECTS_VOLUME_SLIDER.addEventListener("input", (e: Event) => {
   const value = Number(target.value);
 
   Sound.effectVolume = value;
+  BREAK_EFFECT.play();
 });
 
 // Vissza gombok

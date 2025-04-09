@@ -1,6 +1,7 @@
 import {
   BACKGROUND_MUSIC,
   GAME_PAGE,
+  INFORMATIONS_PAGE,
   MAIN_MENU_PAGE,
   SCOREBOARD_PAGE,
   SETTINGS_PAGE,
@@ -9,6 +10,7 @@ import {
 class App {
   private readonly pages = [
     MAIN_MENU_PAGE,
+    INFORMATIONS_PAGE,
     SETTINGS_PAGE,
     SCOREBOARD_PAGE,
     GAME_PAGE,
